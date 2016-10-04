@@ -1,4 +1,10 @@
-function checkURL() {
+
+// исполь
+function beginLoadURL(url, container, test) {
+ return test ? true : loadURL(url, container);
+}
+
+function checkURL(test) {
 
     //get the url by removing the hash
     var url = location.hash.replace(/^#/, '');
@@ -17,7 +23,10 @@ function checkURL() {
         //console.log("page title: " + document.title);
 
         // parse url to jquery
-        loadURL(url + location.search, container);
+        // здесь имеет место быть шов, так как loadURL() не определена в "понятном" нам коде
+        // для разрыва зависимости используем функцию beginLoadUrl, которая в случае
+        // если параметр test = true, всегда возвращает true
+        beginLoadURL(url + location.search, container, test);
     } else {
 
         // grab the first URL from nav
@@ -29,3 +38,11 @@ function checkURL() {
     }
 
 }
+
+// тест
+function assert() {
+    checkURL(true);
+}
+
+// запуск теста
+assert();

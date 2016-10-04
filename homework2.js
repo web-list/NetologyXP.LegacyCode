@@ -1,4 +1,12 @@
-function formSetEditReport(idReport) {
+function processReportType(type, test) {
+    return test ? true : toggleReportType(type);
+}
+
+function processReportParameters(type, parameters, test) {
+    return test ? true : updateReportParametersFunctions[type](parameters);
+}
+
+function formSetEditReport(idReport, test) {
     var report = {
         'type': ReportPlugin.defaultReportType,
         'format': ReportPlugin.defaultReportFormat,
@@ -16,7 +24,10 @@ function formSetEditReport(idReport) {
         $('#report_submit').val(ReportPlugin.createReportString);
     }
 
-    toggleReportType(report.type);
+    // разрываем зависимость с помощью processReportType(),
+    // просто возвращающей true и ничего не делающей, в случае test=true
+    processReportType(report.type, test);
+    // toggleReportType(report.type);
 
     $('#report_description').html(report.description);
     $('#report_segment').find('option[value=' + report.idsegment + ']').prop('selected', 'selected');
@@ -32,7 +43,18 @@ function formSetEditReport(idReport) {
         $('.' + report.type + ' [report-unique-id=' + report.reports[key] + ']').prop('checked', 'checked');
     }
 
-    updateReportParametersFunctions[report.type](report.parameters);
+    // разрываем зависимость с помощью processReportParameters(),
+    // просто возвращающей true и ничего не делающей, в случае test=true
+    processReportParameters(report.type, report.parameters, test);
+    // updateReportParametersFunctions[report.type](report.parameters);
 
     $('#report_idreport').val(idReport);
 }
+
+// тест
+function assert(idReport) {
+    formSetEditReport(idReport, true);
+}
+
+// запуск теста
+assert(1);
