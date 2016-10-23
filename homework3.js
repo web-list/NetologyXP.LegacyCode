@@ -26,9 +26,11 @@ player.showHighScoreList = function(pageToken) {
                 return;
             }
             var root = document.getElementById('highScoreListDiv');
+            // шов 4 - player.createPlayerList()
             player.createPlayerList(root, response.items, true);
             if (response.prevPageToken) {
                 root.appendChild(
+                    // шов 5 - utilities.createButton()
                     utilities.createButton('Prev', response.prevPageToken,
                         function(event) {
                             player.showHighScoreList(event.target.value);
@@ -36,6 +38,7 @@ player.showHighScoreList = function(pageToken) {
             }
             if (response.nextPageToken) {
                 root.appendChild(
+                    // шов 6 - utilities.createButton()
                     utilities.createButton('Prev', response.prevPageToken,
                         function(event) {
                             player.showHighScoreList(event.target.value);
